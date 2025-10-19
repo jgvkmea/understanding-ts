@@ -31,3 +31,32 @@ function extractAndConvert<T extends Object, U extends keyof T>(
 }
 
 console.log(extractAndConvert({ name: "Ken" }, "name"));
+
+// 100: Genericクラス
+class DataStorage<T extends string | number | boolean> {
+  private data: T[] = [];
+
+  addItem(item: T) {
+    this.data.push(item);
+  }
+
+  removeItem(item: T) {
+    this.data.splice(this.data.indexOf(item), 1);
+  }
+
+  getItems() {
+    return [...this.data];
+  }
+}
+
+const textStorage: DataStorage<string> = new DataStorage();
+textStorage.addItem("1");
+textStorage.addItem("2");
+textStorage.removeItem("1");
+console.log(textStorage.getItems());
+
+const numberStorage: DataStorage<number> = new DataStorage();
+numberStorage.addItem(1);
+numberStorage.addItem(2);
+numberStorage.removeItem(2);
+console.log(numberStorage.getItems());
