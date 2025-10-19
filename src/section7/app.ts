@@ -60,3 +60,24 @@ numberStorage.addItem(1);
 numberStorage.addItem(2);
 numberStorage.removeItem(2);
 console.log(numberStorage.getItems());
+
+// 102: Generic型のユーティリティ
+
+// Partial: 一時的にプロパティをオプショナルに変更する
+interface Course {
+  id: string;
+  title: string;
+}
+
+function createCourse(id: string, title: string): Course {
+  // Partialにしないと {} はidやtitleを持たないためエラーになる
+  // 初期化と値の詰め込みを別でしたい場合にPartialが使える
+  const course: Partial<Course> = {};
+  course.id = id;
+  course.title = title;
+  return course as Course;
+}
+
+// Readonly: 配列やオブジェクトを変更不可にする
+const names: Readonly<string[]> = ["Ken", "Mike"];
+// names.push("Alice"); エラーになる
