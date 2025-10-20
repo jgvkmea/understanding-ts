@@ -32,3 +32,23 @@ class Person2 {
 }
 
 const p2 = new Person2();
+
+// 110: プロパティデコレータの詳細
+function LogProperty(target: any, propertyName: string | Symbol) {
+  console.log(target, propertyName);
+}
+
+class Product {
+  @LogProperty
+  title: string;
+  private _price: number;
+
+  constructor(t: string, p: number) {
+    this.title = t;
+    this._price = p;
+  }
+
+  getPriceWithTax(tax: number) {
+    return this._price * (1 + tax);
+  }
+}
