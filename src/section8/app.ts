@@ -7,17 +7,21 @@ function Logger(str: string) {
   };
 }
 
-// 108: 便利なデコレータ
+// 108: 便利なデコレータ, 113: クラスデコレータによるクラスの変更
 function WithTemplate(template: string, id: string) {
   console.log("WithTemplate ファクトリ");
-  return function (constructor: any) {
-    console.log("Template表示");
-    const el = document.getElementById(id)!;
-    const p = new constructor();
-    if (el) {
-      el.innerHTML = template;
-      el.querySelector("h1")!.innerText = p.name;
-    }
+  return function (originalConstructor: { new (): { name: string } }) {
+    return class extends originalConstructor {
+      constructor() {
+        super();
+        console.log("Template表示");
+        const el = document.getElementById(id)!;
+        if (el) {
+          el.innerHTML = template;
+          el.querySelector("h1")!.innerText = this.name;
+        }
+      }
+    };
   };
 }
 
@@ -32,6 +36,7 @@ class Person2 {
 }
 
 const p2 = new Person2();
+const p3 = new Person2();
 
 // 110: プロパティデコレータの詳細
 function LogProperty(target: any, propertyName: string | Symbol) {
