@@ -39,6 +39,36 @@ function LogProperty(target: any, propertyName: string | Symbol) {
   console.log(target, propertyName);
 }
 
+// 111: アクセサとパラメータのデコレータ
+function LogAccessor<T>(
+  target: any,
+  name: string,
+  descriptor: TypedPropertyDescriptor<T>
+) {
+  console.log("Accesor デコレータ");
+  console.log("target: " + target);
+  console.log("name: " + name);
+  console.log("descriptor: " + descriptor);
+}
+
+function LogMethod<T>(
+  target: any,
+  name: string | Symbol,
+  descriptor: TypedPropertyDescriptor<T>
+) {
+  console.log("Method デコレータ");
+  console.log("target: " + target);
+  console.log("name: " + name);
+  console.log("descriptor: " + descriptor);
+}
+
+function LogParameter(target: any, name: string | Symbol, position: number) {
+  console.log("Parameter デコレータ");
+  console.log("target: " + target);
+  console.log("name: " + name);
+  console.log("position: " + position);
+}
+
 class Product {
   @LogProperty
   title: string;
@@ -49,6 +79,7 @@ class Product {
     this._price = p;
   }
 
+  @LogAccessor
   set price(val: number) {
     if (val > 0) {
       this._price = val;
@@ -57,7 +88,8 @@ class Product {
     }
   }
 
-  getPriceWithTax(tax: number) {
+  @LogMethod
+  getPriceWithTax(@LogParameter tax: number) {
     return this._price * (1 + tax);
   }
 }
