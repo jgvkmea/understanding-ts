@@ -35,6 +35,7 @@ const p2 = new Person2();
 
 // 110: プロパティデコレータの詳細
 function LogProperty(target: any, propertyName: string | Symbol) {
+  console.log("Property デコレータ");
   console.log(target, propertyName);
 }
 
@@ -46,6 +47,14 @@ class Product {
   constructor(t: string, p: number) {
     this.title = t;
     this._price = p;
+  }
+
+  set price(val: number) {
+    if (val > 0) {
+      this._price = val;
+    } else {
+      throw new Error("価格が不正です");
+    }
   }
 
   getPriceWithTax(tax: number) {
