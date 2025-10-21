@@ -1,19 +1,19 @@
 {
-  "name": "understanding-ts",
+  "name": "understanding-typescript",
   "version": "1.0.0",
-  "description": "",
-  "license": "ISC",
-  "author": "",
-  "type": "commonjs",
+  "description": "Understanding TypeScript Course Setup",
   "main": "app.js",
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc -w",
-    "start": "lite-server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "lite-server"
   },
+  "keywords": [
+    "typescript",
+    "course"
+  ],
+  "author": "Maximilian Schwarzmüller",
+  "license": "ISC",
   "devDependencies": {
-    "lite-server": "^2.6.1",
-    "typescript": "^5.9.3"
+    "lite-server": "^2.5.4"
   }
 }
