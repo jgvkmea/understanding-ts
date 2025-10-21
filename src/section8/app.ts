@@ -98,3 +98,33 @@ class Product {
     return this._price * (1 + tax);
   }
 }
+
+// 115: Autobindデコレータの作成
+function Autobind<T extends Function>(
+  _: any,
+  _2: string,
+  descriptor: TypedPropertyDescriptor<T>
+) {
+  const originalMethod = descriptor.value!;
+  const adjDescriptor: TypedPropertyDescriptor<T> = {
+    configurable: true,
+    enumerable: false,
+    get(): T {
+      const method = originalMethod.bind(this);
+      return method;
+    },
+  };
+  return adjDescriptor;
+}
+
+class Printer {
+  message = "クリックされました";
+
+  @Autobind
+  showMessage() {
+    console.log(this.message);
+  }
+}
+
+const p = new Printer();
+document.querySelector("button")?.addEventListener("click", p.showMessage);
