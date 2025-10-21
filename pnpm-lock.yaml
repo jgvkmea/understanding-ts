@@ -9,7 +9,7 @@ importers:
   .:
     devDependencies:
       lite-server:
-        specifier: ^2.6.1
+        specifier: ^2.5.4
         version: 2.6.1
       typescript:
         specifier: ^5.9.3
