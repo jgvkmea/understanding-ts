@@ -128,3 +128,78 @@ class Printer {
 
 const p = new Printer();
 document.querySelector("button")?.addEventListener("click", p.showMessage);
+
+// 116, 117: デコレータによるバリデーション
+interface ValidationConfig {
+  [className: string]: {
+    [propName: string]: string[];
+  };
+}
+
+const validationCondig: ValidationConfig = {};
+
+function Required(target: any, propName: string) {
+  validationCondig[target.constructor.name] = {
+    ...validationCondig[target.constructor.name],
+    [propName]: ["required"],
+  };
+}
+
+function PositiveNumber(target: any, propName: string) {
+  validationCondig[target.constructor.name] = {
+    ...validationCondig[target.constructor.name],
+    [propName]: ["positive"],
+  };
+}
+
+function validate(obj: any) {
+  const objValidationCondig = validationCondig;
+  var isValid = true;
+
+  for (const propName in objValidationCondig[obj.constructor.name]) {
+    for (const validation of objValidationCondig[obj.constructor.name][
+      propName
+    ]) {
+      switch (validation) {
+        case "required":
+          isValid = isValid && !!obj[propName];
+          break;
+        case "positive":
+          isValid = isValid && obj[propName] > 0;
+          break;
+
+        default:
+          break;
+      }
+    }
+  }
+
+  return isValid;
+}
+
+class Course {
+  @Required
+  title: string;
+  @PositiveNumber
+  price: number;
+
+  constructor(t: string, p: number) {
+    this.title = t;
+    this.price = p;
+  }
+}
+
+const form = document.querySelector("form")!;
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const titleEl = document.getElementById("title")! as HTMLInputElement;
+  const priceEl = document.getElementById("price")! as HTMLInputElement;
+
+  const course = new Course(titleEl.value, +priceEl.value);
+  if (!validate(course)) {
+    alert("正しい値を入力してください");
+    return;
+  }
+  console.log(course);
+});
