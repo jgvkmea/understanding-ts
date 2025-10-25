@@ -10,6 +10,22 @@ type googleGeoResponse = {
 
 const GOOGLE_MAP_API_KEY = process.env.GOOGLE_MAP_API_KEY;
 
+// Google Maps APIを動的に読み込む関数
+// APIキーをenvファイルから読み込んでいるのでここでGoogle Map APIを初期化する
+function loadGoogleMapsAPI(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAP_API_KEY}&v=weekly&libraries=marker`;
+    script.defer = true;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error("Google Maps API could not load."));
+    document.head.appendChild(script);
+  });
+}
+loadGoogleMapsAPI();
+
+// declare var google: any; // @types/google.maps をインストールしない場合には必要
+
 function searchAddressHandler(event: Event) {
   event.preventDefault();
   const enteredAddress13 = addressEl13.value;
@@ -24,9 +40,16 @@ function searchAddressHandler(event: Event) {
       if (res.data.status != "OK") {
         throw new Error("結果が0件でした");
       }
-      const coor = res.data.results[0].geometry.location;
-      console.log(res.data.results);
-      console.log(coor);
+      const coordinates = res.data.results[0].geometry.location;
+      const map = new google.maps.Map(document.getElementById("map")!, {
+        center: coordinates,
+        zoom: 16,
+        mapId: "DEMO_MAP_ID",
+      });
+      new google.maps.marker.AdvancedMarkerElement({
+        map,
+        position: coordinates,
+      });
     })
     .catch((error) => {
       alert(error.message);
