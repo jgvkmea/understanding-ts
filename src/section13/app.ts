@@ -8,7 +8,7 @@ type googleGeoResponse = {
   status: "OK" | "ZERO_RESULTS";
 };
 
-const GOOGLE_MAP_API_KEY = process.env.GOOGLE_MAP_API_KEY;
+const GOOGLE_MAP_API_KEY = process.env.GOOGLE_MAP_API_KEY; // 漏洩防止のため.envファイルから読み込む
 
 // Google Maps APIを動的に読み込む関数
 // APIキーをenvファイルから読み込んでいるのでここでGoogle Map APIを初期化する
